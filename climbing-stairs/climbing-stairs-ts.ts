@@ -1,65 +1,45 @@
 function climbStairs(n: number): number {
-    // Max number of double steps is Math.floor(n / 2)
-    // Number of singles is always n
-    // Can always generate an array of singles
-    // Can progress with arrays for iterations and strings for simpleer signature checks
-    let possibilityCount = 0;
-    const maxDoubles = Math.floor(n / 2);
-    const stepOrders: Record<number, string[]> = {
-      0: createSingleStepOrder(n)
-    };
+  // Contraints: 1 <= n <= 45
+  let possibilities = 1;
 
-    if (n > 1) {
-      processDoubles(stepOrders, 1, maxDoubles);
+  const maxDoubles = Math.floor(n / 2);
+
+  if (n > 1) {
+    let doubleSteps = 1;
+
+    while (doubleSteps <= maxDoubles) {
+      possibilities += getCombinationCount(n, doubleSteps);
+      doubleSteps++;
     }
+  }
 
-    for (let stepOrder in stepOrders) {
-      possibilityCount += stepOrders[stepOrder].length;
-    }
-
-    return possibilityCount;
+  return possibilities;
 };
 
-function createSingleStepOrder(n: number): string[] {
-  let order = '';
+function getCombinationCount(stairCount: number, doubleCount: number): number {
+  const positions = stairCount - doubleCount;
+  let permutations = 1;
+  let doubleCountChecked = 0;
 
-  while (order.length < n) {
-    order += '1';
+  while (doubleCountChecked < doubleCount) {
+    permutations *= positions - doubleCountChecked;
+
+    doubleCountChecked++;
   }
 
-  return [order];
-}
-
-function processDoubles(stepOrders: Record<number, string[]>, doubleCount: number, maxDoubles: number): void {
-  stepOrders[doubleCount] = [];
-
-  stepOrders[doubleCount - 1].forEach((stepOrder: string) => {
-    for (let firstSingleIndex = 0; firstSingleIndex < stepOrder.length - 1; firstSingleIndex++) {
-      for (let secondSingleIndex = firstSingleIndex + 1; secondSingleIndex < stepOrder.length; secondSingleIndex++) {
-        if (stepOrder[firstSingleIndex] === '1' && stepOrder[secondSingleIndex] === '1') {
-          const potentialAtFirst = stepOrder.slice(0, firstSingleIndex) + '2' + stepOrder.slice(firstSingleIndex + 1, secondSingleIndex) + stepOrder.slice(secondSingleIndex + 1);
-          const potentialAtSecond = stepOrder.slice(0, firstSingleIndex) + stepOrder.slice(firstSingleIndex + 1, secondSingleIndex) + '2' + stepOrder.slice(secondSingleIndex + 1);
-  
-          if (!stepOrders[doubleCount].includes(potentialAtFirst)) {
-            stepOrders[doubleCount].push(potentialAtFirst);
-          }
-  
-          if (!stepOrders[doubleCount].includes(potentialAtSecond)) {
-            stepOrders[doubleCount].push(potentialAtSecond);
-          }
-        }
-      }
-    }
-  });
-
-  if (doubleCount < maxDoubles) {
-    processDoubles(stepOrders, doubleCount + 1, maxDoubles);
-  }
+  return permutations;
 }
 
 const climbStairsResult_1 = climbStairs(1);
-console.log(climbStairsResult_1);
+console.assert(climbStairsResult_1 === 1, `Result: ${climbStairsResult_1} | Expected: 1`);
 const climbStairsResult_2 = climbStairs(2);
-console.log(climbStairsResult_2);
+console.assert(climbStairsResult_2 === 2, `Result: ${climbStairsResult_2} | Expected: 2`);
 const climbStairsResult_3 = climbStairs(3);
-console.log(climbStairsResult_3);
+console.assert(climbStairsResult_3 === 3, `Result: ${climbStairsResult_3} | Expected: 3`);
+const climbStairsResult_4 = climbStairs(4);
+console.assert(climbStairsResult_4 === 5, `Result: ${climbStairsResult_4} | Expected: 5`);
+const climbStairsResult_5 = climbStairs(5);
+console.assert(climbStairsResult_5 === 8, `Result: ${climbStairsResult_5} | Expected: 8`);
+console.log('1', climbStairsResult_1);
+console.log('2', climbStairsResult_2);
+console.log('3', climbStairsResult_3);
