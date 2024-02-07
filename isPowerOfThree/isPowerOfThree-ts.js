@@ -1,6 +1,6 @@
 "use strict";
 function isPowerOfThree(n) {
-    let nextPower3 = 3;
+    let nextPower3 = 1;
     while (nextPower3 < n) {
         nextPower3 *= 3;
     }
