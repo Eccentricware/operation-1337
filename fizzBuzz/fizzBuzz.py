@@ -21,7 +21,6 @@ class Solution:
     return answer
 
 s = Solution
-
 print(s.fizzBuzz(s, 3))
 print(s.fizzBuzz(s, 5))
 print(s.fizzBuzz(s, 15))
