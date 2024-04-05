@@ -2,6 +2,11 @@ function increasingTriplet(nums: number[]): boolean {
   let triplets: number[][] = [];
   let tripletFound = false;
 
+  let signatures: string[] = [];
+  const getSignature = (moreNums: number[]):string => {
+    return moreNums.join('|');
+  }
+
   let numIndex = 0;
   while (numIndex < nums.length && !tripletFound) {
     let number = nums[numIndex];
@@ -12,7 +17,11 @@ function increasingTriplet(nums: number[]): boolean {
         if (newTriplet.length === 3) {
           tripletFound = true;
         } else {
-          triplets.push(newTriplet);
+          const signature = getSignature(newTriplet);
+          if (!signatures.includes(signature)) {
+            triplets.push(newTriplet);
+            signatures.push(signature);
+          }
         }
       }
     });
@@ -23,4 +32,5 @@ function increasingTriplet(nums: number[]): boolean {
   return tripletFound;
 };
 
+console.log(increasingTriplet([1,5,0,4,1,3]));
 console.log(increasingTriplet([1,5,0,4,1,3]));

@@ -10,7 +10,7 @@ function findMaxAverage(nums: number[], k: number): number {
     runningSum -= nums[outIndex];
 
     if (runningSum > maxSum) {
-      maxSum = runningSum
+      maxSum = runningSum;
     }
 
     nextIndex++;
