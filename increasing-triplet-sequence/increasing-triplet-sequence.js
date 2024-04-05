@@ -2,6 +2,10 @@
 function increasingTriplet(nums) {
     let triplets = [];
     let tripletFound = false;
+    let signatures = [];
+    const getSignature = (moreNums) => {
+        return moreNums.join('|');
+    };
     let numIndex = 0;
     while (numIndex < nums.length && !tripletFound) {
         let number = nums[numIndex];
@@ -13,7 +17,11 @@ function increasingTriplet(nums) {
                     tripletFound = true;
                 }
                 else {
-                    triplets.push(newTriplet);
+                    const signature = getSignature(newTriplet);
+                    if (!signatures.includes(signature)) {
+                        triplets.push(newTriplet);
+                        signatures.push(signature);
+                    }
                 }
             }
         });
@@ -23,4 +31,5 @@ function increasingTriplet(nums) {
     return tripletFound;
 }
 ;
+console.log(increasingTriplet([1, 5, 0, 4, 1, 3]));
 console.log(increasingTriplet([1, 5, 0, 4, 1, 3]));
