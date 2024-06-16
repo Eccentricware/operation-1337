@@ -7,17 +7,14 @@ function longestOnes(nums, k) {
     let outDex = 0;
     let lastOne = -3;
     let snapIndices = [];
-    if (k > 0) {
-    }
+    let lastOneLocked = false;
     while (inDex < nums.length) {
         if (nums[inDex] === 1) {
             nowAdjOnes++;
-            lastOne = inDex;
+            lastOne = lastOneLocked ? lastOne : inDex;
         }
         if (nums[inDex] === 0) {
-            if (inDex - lastOne >= 2) {
-                snapIndices.push(inDex);
-            }
+            lastOneLocked = true;
             if (k === 0) {
                 nowAdjOnes = 0;
             }
@@ -29,14 +26,18 @@ function longestOnes(nums, k) {
                 if (nums[outDex] === 1 && snapIndices.length > 0) {
                     // End of reach. Reset
                     outDex = snapIndices.unshift();
-                    inDex = outDex - 1;
+                    inDex = outDex - 1; // inDex is always being iterated so this compensates
                     fillRemaining = k;
                     nowAdjOnes = 0;
                     lastOne = -3;
+                    lastOneLocked = false;
                 }
                 else {
                     outDex++;
                 }
+            }
+            if (inDex - lastOne > 0 && lastOne >= 0) {
+                snapIndices.push(inDex);
             }
         }
         if (nowAdjOnes > maxAdjOnes) {
